@@ -13,8 +13,8 @@ Script to fully render a BigBang child service from base and overlay values.
 ```bash
 ## Create service release off main
 ./bigbang-helm-templater.sh \
-  --repo-dir "$HOME/k8s" \
-  --bigbang-tag 3.29.0 \
+  --repo-dir /path/to/k8s \
+  --bigbang-tag 3.33.0 \
   --bb-services loki \
   --impact-level il4 \
   --environment sandbox \
@@ -22,21 +22,23 @@ Script to fully render a BigBang child service from base and overlay values.
 
 ## Update values and rerun (without --create-base flag)
 ./bigbang-helm-templater.sh \
-  --repo-dir "$HOME/k8s" \
-  --bigbang-tag 3.29.0 \
+  --repo-dir /path/to/k8s \
+  --bigbang-tag 3.33.0 \
   --bb-services loki \
   --impact-level il4 \
   --environment sandbox
 
 ## Run diff to compare changes
-### (Be sure to update env, impact-level, date and service name below)
+### Set this to the date directory containing both generated outputs
+RUN_DATE=YYYY-MM-DD
 git diff --no-index \
-  outputs/sandbox-il4/2026-08-21/services/loki-release-base.yaml \
-  outputs/sandbox-il4/2026-08-21/services/loki-release.yaml
+  outputs/sandbox-il4/"$RUN_DATE"/services/loki-release-base.yaml \
+  outputs/sandbox-il4/"$RUN_DATE"/services/loki-release.yaml
 ```
 
 ## Script Flags/Options
 ```
+--bb-services LIST      Child releases to render, comma-separated, or ALL (required)
 --environment ENV       Environment (default: sandbox)
 --impact-level LEVEL    Impact level (default: il4)
 --bigbang-tag TAG       Big Bang Git tag/ref (default: 3.29.0)

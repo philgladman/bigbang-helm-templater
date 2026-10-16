@@ -55,8 +55,14 @@ Options:
   -h, --help              Show this help
 
 Examples:
-  ./bigbang-helm-templater.sh --bb-services grafana
-  ./bigbang-helm-templater.sh --bb-services loki --create-base
+  ./bigbang-helm-templater.sh \
+    --repo-dir /path/to/k8s \
+    --bigbang-tag 3.33.0 \
+    --bb-services monitoring \
+    --impact-level il4 \
+    --environment sandbox
+
+  ./bigbang-helm-templater.sh --bb-services monitoring --create-base
   ./bigbang-helm-templater.sh --bb-services istio-gateway,monitoring,grafana
   ./bigbang-helm-templater.sh --bb-services ALL
 
@@ -267,6 +273,11 @@ helm template bigbang "${bigbang_repo_dir}/chart" \
   --kube-version "$kube_version" \
   --api-versions networking.istio.io/v1 \
   --api-versions kyverno.io/v1 \
+  --api-versions monitoring.coreos.com/v1 \
+  --api-versions monitoring.coreos.com/v1/ServiceMonitor \
+  --api-versions monitoring.coreos.com/v1/PodMonitor \
+  --api-versions monitoring.coreos.com/v1/PrometheusRule \
+  --api-versions metrics.k8s.io/v1beta1 \
   --skip-schema-validation \
   --values "$base_values" \
   --values "$copied_overlay_values" \
@@ -437,6 +448,11 @@ for service in "${requested_services[@]}"; do
     --kube-version "$kube_version" \
     --api-versions networking.istio.io/v1 \
     --api-versions kyverno.io/v1 \
+    --api-versions monitoring.coreos.com/v1 \
+    --api-versions monitoring.coreos.com/v1/ServiceMonitor \
+    --api-versions monitoring.coreos.com/v1/PodMonitor \
+    --api-versions monitoring.coreos.com/v1/PrometheusRule \
+    --api-versions metrics.k8s.io/v1beta1 \
     --values "$common_values" \
     --values "$default_values" \
     --values "$child_overlay_values" \
